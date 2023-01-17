@@ -14,7 +14,7 @@ void subtractAndSaveMatrixRow(float matrixArr[], int row1, int row2, int rowLeng
 
 int main()
 {
-	int xSize = 0, ySize = 0, tmp = 0;
+	int xSize = 0, ySize = 0;
 	float multiplier = 0;
 	bool allZeroes = true;
 	
