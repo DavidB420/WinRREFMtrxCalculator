@@ -14,7 +14,7 @@ void subtractAndSaveMatrixRow(float matrixArr[], int row1, int row2, int rowLeng
 
 int main()
 {
-	int xSize = 0, ySize = 0;
+	int xSize = 0, ySize = 0, pivotPos = 0;
 	float multiplier = 0;
 	bool allZeroes = true;
 	
@@ -84,6 +84,40 @@ int main()
 	}
 
 	printf("\nREF Matrix:\n");
+	displayMatrix(matrixArr, xSize, ySize);
+
+	for (int y = 0; y < ySize; y++)
+	{
+		for (int x = 0; x < xSize; x++)
+		{
+			if (matrixArr[(y * xSize) + x] != 0)
+			{
+				pivotPos = x;
+				break;
+			}
+			else
+			{
+				pivotPos = -1;
+			}
+		}
+
+		if (pivotPos >= 0)
+		{
+			for (int y2 = 0; y2 < ySize; y2++)
+			{
+				if (y2 != y)
+				{
+					if (matrixArr[(y * xSize) + pivotPos] != 0)
+					{
+						multiplier = matrixArr[(y2 * xSize) + pivotPos] / matrixArr[(y * xSize) + pivotPos];
+						subtractAndSaveMatrixRow(matrixArr, y2, y, xSize, y2, multiplier);
+					}
+				}
+			}
+		}
+	}
+
+	printf("\nRREF Matrix:\n");
 	displayMatrix(matrixArr, xSize, ySize);
 	
 }
