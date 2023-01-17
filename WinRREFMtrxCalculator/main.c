@@ -14,10 +14,12 @@ void subtractAndSaveMatrixRow(float matrixArr[], int row1, int row2, int rowLeng
 
 int main()
 {
-	int xSize = 0, ySize = 0;
+	//Declare variables
+	int xSize = 0, ySize = 0, pivotPos = 0;
 	float multiplier = 0;
 	bool allZeroes = true;
 	
+	//Prompt user for size of their matrix
 	printf("--------------------------------\nRREF Matrix Calculator         |\nCopyright (C) 2023 David Badiei|\n--------------------------------\n");
 
 	xSize = getIntegerValue("\nEnter size of matrix in x dimension (max 10): ");
@@ -30,9 +32,11 @@ int main()
 		while (!scanf("%f", &matrixArr[i]));
 	}
 
+	//Display original matrix that user entered in
 	printf("\nOriginal Matrix:\n");
 	displayMatrix(matrixArr, xSize, ySize);
 
+	//Move all zero rows to bottom of matrix
 	for (int i = 0; i < ySize; i++)
 	{
 		allZeroes = true;
@@ -51,9 +55,11 @@ int main()
 		}
 	}
 
+	//Make sure first matrix value equals one
 	multiplier = 1 / matrixArr[0];
 	multiplyMatrixConstant(matrixArr, 0, xSize, multiplier);
 
+	//Do some matrix subtraction to get the matrix in the downwards staircase, and multiply by a constant to get the pivot equalling to one
 	for (int i = 1; i < ySize; i++)
 	{
 		for (int y = 0; y < i; y++)
@@ -83,8 +89,47 @@ int main()
 		multiplyMatrixConstant(matrixArr, i, xSize, multiplier);
 	}
 
+	//Output matrix in REF form
 	printf("\nREF Matrix:\n");
 	displayMatrix(matrixArr, xSize, ySize);
+
+	//Make sure matrix is in RREF form, aka make sure the pivot is the only non-zero value in the column
+	for (int y = 0; y < ySize; y++)
+	{
+		for (int x = 0; x < xSize; x++)
+		{
+			if (matrixArr[(y * xSize) + x] != 0)
+			{
+				pivotPos = x;
+				break;
+			}
+			else
+			{
+				pivotPos = -1;
+			}
+		}
+
+		if (pivotPos >= 0)
+		{
+			for (int y2 = 0; y2 < ySize; y2++)
+			{
+				if (y2 != y)
+				{
+					if (matrixArr[(y * xSize) + pivotPos] != 0)
+					{
+						multiplier = matrixArr[(y2 * xSize) + pivotPos] / matrixArr[(y * xSize) + pivotPos];
+						subtractAndSaveMatrixRow(matrixArr, y2, y, xSize, y2, multiplier);
+					}
+				}
+			}
+		}
+	}
+
+	//Output RREF value
+	printf("\nRREF Matrix:\n");
+	displayMatrix(matrixArr, xSize, ySize);
+
+	return 0;
 	
 }
 
