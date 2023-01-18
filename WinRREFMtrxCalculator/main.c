@@ -89,6 +89,33 @@ int main()
 		multiplyMatrixConstant(matrixArr, i, xSize, multiplier);
 	}
 
+	//Sort the rows, if necessary
+	for (int y = 1; y < ySize; y++)
+	{
+		allZeroes = true;
+
+		for (int x = 0; x < xSize; x++)
+		{
+			if (matrixArr[(y * xSize) + x] != 0)
+			{
+				for (int x2 = x; x2 >= 0; x2--)
+				{
+					if (matrixArr[((y - 1) * xSize) + x])
+					{
+						allZeroes = false;
+					}
+				}
+
+				if (allZeroes)
+				{
+					swapMatrixRows(y, y - 1, xSize, matrixArr);
+				}
+
+				break;
+			}
+		}
+	}
+
 	//Output matrix in REF form
 	printf("\nREF Matrix:\n");
 	displayMatrix(matrixArr, xSize, ySize);
