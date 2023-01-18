@@ -43,7 +43,7 @@ int main()
 
 		for (int x = 0; x < xSize; x++)
 		{
-			if (matrixArr[(int)floor(x / xSize) + i % xSize] != 0)
+			if (matrixArr[(i * xSize) + x] != 0)
 			{
 				allZeroes = false;
 			}
@@ -56,8 +56,20 @@ int main()
 	}
 
 	//Make sure first matrix value equals one
+	if (matrixArr[0] == 0)
+	{
+		for (int i = 0; i < ySize; i++)
+		{
+			if (matrixArr[i * xSize] != 0)
+			{
+				swapMatrixRows(i, 0, xSize, matrixArr);
+				break;
+			}
+		}
+	}
 	multiplier = 1 / matrixArr[0];
 	multiplyMatrixConstant(matrixArr, 0, xSize, multiplier);
+
 
 	//Do some matrix subtraction to get the matrix in the downwards staircase, and multiply by a constant to get the pivot equalling to one
 	for (int i = 1; i < ySize; i++)
@@ -87,6 +99,33 @@ int main()
 		}
 
 		multiplyMatrixConstant(matrixArr, i, xSize, multiplier);
+	}
+
+	//Sort the rows, if necessary
+	for (int y = 1; y < ySize; y++)
+	{
+		allZeroes = true;
+
+		for (int x = 0; x < xSize; x++)
+		{
+			if (matrixArr[(y * xSize) + x] != 0)
+			{
+				for (int x2 = x; x2 >= 0; x2--)
+				{
+					if (matrixArr[((y - 1) * xSize) + x2] != 0)
+					{
+						allZeroes = false;
+					}
+				}
+
+				if (allZeroes)
+				{
+					swapMatrixRows(y, y - 1, xSize, matrixArr);
+				}
+
+				break;
+			}
+		}
 	}
 
 	//Output matrix in REF form
